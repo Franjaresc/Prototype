@@ -1,0 +1,674 @@
+{
+  "id": "a262e93e-eaa7-440a-a295-dfb88fa45548",
+  "prevId": "9226617d-0b8d-4dae-b089-2a47f1d19d06",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "woolfandfox.asignacion_personal": {
+      "name": "asignacion_personal",
+      "schema": "woolfandfox",
+      "columns": {
+        "ruta_id": {
+          "name": "ruta_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "personal_id": {
+          "name": "personal_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_asignacion_personal_personal_id": {
+          "name": "idx_asignacion_personal_personal_id",
+          "columns": [
+            {
+              "expression": "personal_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "asignacion_personal_ruta_id_rutas_id_fk": {
+          "name": "asignacion_personal_ruta_id_rutas_id_fk",
+          "tableFrom": "asignacion_personal",
+          "tableTo": "rutas",
+          "schemaTo": "woolfandfox",
+          "columnsFrom": [
+            "ruta_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "asignacion_personal_personal_id_personal_id_fk": {
+          "name": "asignacion_personal_personal_id_personal_id_fk",
+          "tableFrom": "asignacion_personal",
+          "tableTo": "personal",
+          "schemaTo": "woolfandfox",
+          "columnsFrom": [
+            "personal_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "asignacion_personal_ruta_id_personal_id_pk": {
+          "name": "asignacion_personal_ruta_id_personal_id_pk",
+          "columns": [
+            "ruta_id",
+            "personal_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "woolfandfox.operaciones_diarias": {
+      "name": "operaciones_diarias",
+      "schema": "woolfandfox",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ruta_id": {
+          "name": "ruta_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tipo_operacion": {
+          "name": "tipo_operacion",
+          "type": "tipo_operacion_enum",
+          "typeSchema": "woolfandfox",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "exitosas": {
+          "name": "exitosas",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "incidencias": {
+          "name": "incidencias",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "total": {
+          "name": "total",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "operaciones_diarias_ruta_tipo_uk": {
+          "name": "operaciones_diarias_ruta_tipo_uk",
+          "columns": [
+            {
+              "expression": "ruta_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "tipo_operacion",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_operaciones_diarias_ruta_id": {
+          "name": "idx_operaciones_diarias_ruta_id",
+          "columns": [
+            {
+              "expression": "ruta_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_operaciones_diarias_tipo": {
+          "name": "idx_operaciones_diarias_tipo",
+          "columns": [
+            {
+              "expression": "tipo_operacion",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "operaciones_diarias_ruta_id_rutas_id_fk": {
+          "name": "operaciones_diarias_ruta_id_rutas_id_fk",
+          "tableFrom": "operaciones_diarias",
+          "tableTo": "rutas",
+          "schemaTo": "woolfandfox",
+          "columnsFrom": [
+            "ruta_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "operaciones_diarias_exitosas_chk": {
+          "name": "operaciones_diarias_exitosas_chk",
+          "value": "\"woolfandfox\".\"operaciones_diarias\".\"exitosas\" >= 0"
+        },
+        "operaciones_diarias_incidencias_chk": {
+          "name": "operaciones_diarias_incidencias_chk",
+          "value": "\"woolfandfox\".\"operaciones_diarias\".\"incidencias\" >= 0"
+        },
+        "operaciones_diarias_total_chk": {
+          "name": "operaciones_diarias_total_chk",
+          "value": "\"woolfandfox\".\"operaciones_diarias\".\"total\" >= 0"
+        },
+        "operaciones_diarias_total_consistency_chk": {
+          "name": "operaciones_diarias_total_consistency_chk",
+          "value": "\"woolfandfox\".\"operaciones_diarias\".\"total\" = \"woolfandfox\".\"operaciones_diarias\".\"exitosas\" + \"woolfandfox\".\"operaciones_diarias\".\"incidencias\""
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "woolfandfox.personal": {
+      "name": "personal",
+      "schema": "woolfandfox",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rol_id": {
+          "name": "rol_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_personal_rol_id": {
+          "name": "idx_personal_rol_id",
+          "columns": [
+            {
+              "expression": "rol_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "personal_rol_id_roles_id_fk": {
+          "name": "personal_rol_id_roles_id_fk",
+          "tableFrom": "personal",
+          "tableTo": "roles",
+          "schemaTo": "woolfandfox",
+          "columnsFrom": [
+            "rol_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "personal_nombre_chk": {
+          "name": "personal_nombre_chk",
+          "value": "btrim(\"woolfandfox\".\"personal\".\"nombre\") <> ''"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "woolfandfox.roles": {
+      "name": "roles",
+      "schema": "woolfandfox",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nombre_rol": {
+          "name": "nombre_rol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "roles_nombre_rol_uk": {
+          "name": "roles_nombre_rol_uk",
+          "columns": [
+            {
+              "expression": "nombre_rol",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "roles_nombre_rol_chk": {
+          "name": "roles_nombre_rol_chk",
+          "value": "\"woolfandfox\".\"roles\".\"nombre_rol\" in ('Conductor', 'Ayudante', 'Andarín')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "woolfandfox.rutas": {
+      "name": "rutas",
+      "schema": "woolfandfox",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "codigo_ruta": {
+          "name": "codigo_ruta",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fecha": {
+          "name": "fecha",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vehiculo_id": {
+          "name": "vehiculo_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reembolso_total": {
+          "name": "reembolso_total",
+          "type": "numeric(12, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "comentarios_percances": {
+          "name": "comentarios_percances",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "confirmado_por": {
+          "name": "confirmado_por",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "foto_cierre_url": {
+          "name": "foto_cierre_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hora_cierre": {
+          "name": "hora_cierre",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "rutas_codigo_fecha_uk": {
+          "name": "rutas_codigo_fecha_uk",
+          "columns": [
+            {
+              "expression": "codigo_ruta",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "fecha",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_rutas_vehiculo_id": {
+          "name": "idx_rutas_vehiculo_id",
+          "columns": [
+            {
+              "expression": "vehiculo_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_rutas_confirmado_por": {
+          "name": "idx_rutas_confirmado_por",
+          "columns": [
+            {
+              "expression": "confirmado_por",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_rutas_fecha": {
+          "name": "idx_rutas_fecha",
+          "columns": [
+            {
+              "expression": "fecha",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "rutas_vehiculo_id_vehiculos_id_fk": {
+          "name": "rutas_vehiculo_id_vehiculos_id_fk",
+          "tableFrom": "rutas",
+          "tableTo": "vehiculos",
+          "schemaTo": "woolfandfox",
+          "columnsFrom": [
+            "vehiculo_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        },
+        "rutas_confirmado_por_usuarios_id_fk": {
+          "name": "rutas_confirmado_por_usuarios_id_fk",
+          "tableFrom": "rutas",
+          "tableTo": "usuarios",
+          "schemaTo": "woolfandfox",
+          "columnsFrom": [
+            "confirmado_por"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "rutas_codigo_chk": {
+          "name": "rutas_codigo_chk",
+          "value": "btrim(\"woolfandfox\".\"rutas\".\"codigo_ruta\") <> ''"
+        },
+        "rutas_reembolso_chk": {
+          "name": "rutas_reembolso_chk",
+          "value": "\"woolfandfox\".\"rutas\".\"reembolso_total\" >= 0"
+        },
+        "rutas_foto_url_chk": {
+          "name": "rutas_foto_url_chk",
+          "value": "btrim(\"woolfandfox\".\"rutas\".\"foto_cierre_url\") <> ''"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "woolfandfox.usuarios": {
+      "name": "usuarios",
+      "schema": "woolfandfox",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password_hash": {
+          "name": "password_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rol_sistema": {
+          "name": "rol_sistema",
+          "type": "rol_sistema_enum",
+          "typeSchema": "woolfandfox",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "activo": {
+          "name": "activo",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "creado_en": {
+          "name": "creado_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "usuarios_username_uk": {
+          "name": "usuarios_username_uk",
+          "columns": [
+            {
+              "expression": "username",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "usuarios_username_chk": {
+          "name": "usuarios_username_chk",
+          "value": "btrim(\"woolfandfox\".\"usuarios\".\"username\") <> ''"
+        },
+        "usuarios_nombre_chk": {
+          "name": "usuarios_nombre_chk",
+          "value": "btrim(\"woolfandfox\".\"usuarios\".\"nombre\") <> ''"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "woolfandfox.vehiculos": {
+      "name": "vehiculos",
+      "schema": "woolfandfox",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "matricula": {
+          "name": "matricula",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "vehiculos_matricula_uk": {
+          "name": "vehiculos_matricula_uk",
+          "columns": [
+            {
+              "expression": "matricula",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "vehiculos_matricula_chk": {
+          "name": "vehiculos_matricula_chk",
+          "value": "btrim(\"woolfandfox\".\"vehiculos\".\"matricula\") <> ''"
+        }
+      },
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "woolfandfox.rol_sistema_enum": {
+      "name": "rol_sistema_enum",
+      "schema": "woolfandfox",
+      "values": [
+        "admin",
+        "administrativo"
+      ]
+    },
+    "woolfandfox.tipo_operacion_enum": {
+      "name": "tipo_operacion_enum",
+      "schema": "woolfandfox",
+      "values": [
+        "Entrega",
+        "Recogida"
+      ]
+    }
+  },
+  "schemas": {
+    "woolfandfox": "woolfandfox"
+  },
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
